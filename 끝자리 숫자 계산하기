@@ -1,0 +1,35 @@
+끝자리 숫자 계산하기
+여러 개의 자연수가 주어졌을 때, 주어진 모든 자연수를 곱한 수의 마지막 자리수(1 의 자리수)를 계
+산하는 프로그램을 작성하시오.
+예를 들어, 세 개의 자연수 9, 314, 27 을 곱한 수의 마지막 자리수는 2 이다
+
+#include <iostream>
+using namespace std;
+
+int main(void) {
+    int num_case;
+
+    cin >> num_case;
+
+    for (int i = 0; i < num_case; i++)
+    {
+        int num_len;
+        int num_data;
+        cin >> num_len;
+        cin >> num_data;
+        int answer = num_data % 10;
+        for (int j = 1; j < num_len; j++)
+        {
+            cin >> num_data;
+            answer = answer * (num_data % 10);
+            answer = answer % 10;
+        }
+        cout << answer << endl;
+    }
+    return 0;
+}
+
+처음에는 long long unsigned 와 같이 int 의 범위를 설정해서 문제를 해결하려 했으나 문제에서 입력으로 주어지는 정수가 최대 범위를 넘어가서 해결 방법을 생각하게 했던 문제이다.
+생각중에 내린 결론은 주어지는 자연수들의 끝자리만을 계산하는 것이었다.
+주어지는 숫자들의 끝자리만을 %10을 통해서 answer에 곱한 뒤 answer를 계속해서 한자리수로 남겨놓고 계산하는 방법을 채택해서 문제를 풀어보았다.
+문제를 보고 바로바로 코드를 작성하는게 아니라 문제에 대해서 이해하고 구상한 뒤 코드를 작성하는게 중요하다는 것을 깨닫게 된 계기
