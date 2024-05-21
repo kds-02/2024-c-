@@ -1,0 +1,96 @@
+숫자 정사각행렬 달팽이 모양 출력하기
+행과 열의 크기가 홀수 n 인 정사각 행렬 𝐴𝐴𝑛𝑛 = [𝑎𝑎𝑖𝑖,𝑗𝑗] 의 각 원소의 값이 다음과 같이 주어졌을 때,
+𝑎𝑎𝑖𝑖,𝑗𝑗 = (𝑖𝑖 − 1) × 𝑛𝑛 + 𝑗𝑗, 1 ≤ 𝑖𝑖,𝑗𝑗 ≤ 𝑛𝑛
+이 행렬의 각 원소를 다음 그림과 같이 달팽이 모양 순서로 출력하면 아래와 같다.
+ 1 2 3 4 5 10 15 20 25 24 23 22 21 16 11 6 7 8 9 14 19 18 17 12 13
+이렇게 정사각 행렬의 크기 n 이 주어졌을 때 행렬의 원소를 달팽이 모양으로 출력하는 프로그램을
+작성하시오. 단, 두 정수 𝑎𝑎, 𝑏𝑏 (1 ≤ 𝑎𝑎 ≤ 𝑏𝑏 ≤ 𝑛𝑛2) 에 대해서 달팽이 모양으로 출력하였을 때 a 번째 숫자
+부터 b 번째 숫자까지 차례로 출력한다. 예를 들어 n = 5 일 때, a = 10, b = 15 이면 다음과 같이 6
+개의 숫자를 출력한다.
+24 23 22 21 16 11
+
+#include <iostream>
+using namespace std;
+
+int main(void) {
+    int test_case;
+    cin >> test_case;
+    for (int i = 0; i < test_case; i++) {
+        int n;
+        cin >> n;
+        int a_place, b_place;
+        cin >> a_place;
+        cin >> b_place;
+        int a = 0, b = 0, move = 0;
+        for (int x = 0; x <= n * n + 1; x = x + 2) {
+            for (int right = 0; right < n - x; right++) { /* 윗쪽일떄*/
+                if (a_place <= move && move < b_place) { /*입력받은 a의 위치와 이동한 거리가 같으면 출력 시작*/
+                    cout << a << ' ';
+                }
+                a += 1;
+                move += 1;
+                if (move == b_place) {
+                    cout << a << endl;
+                }
+            }
+            if (move > b_place) {
+                break;
+            }
+            for (int down = 0; down < n - x - 1; down++) { /*오른쪽일떄*/
+                if (a_place <= move && move < b_place) {
+                    cout << a << ' ';
+                }
+                a += n;
+                move += 1;
+                if (move == b_place) {
+                    cout << a << endl;
+                }
+            }
+            if (move > b_place) {
+                break;
+            }
+            for (int left = 0; left < n - x - 1; left++) { /*아래일떄*/
+                if (a_place <= move && move < b_place) {
+                    cout << a << ' ';
+                }
+                a -= 1;
+                move += 1;
+                if (move == b_place) {
+                    cout << a << endl;
+                }
+            }
+            if (move > b_place) {
+                break;
+            }
+            for (int up = 0; up < n - x - 2; up++) { /*왼쪽일때*/;
+                if (a_place <= move && move < b_place) {
+                    cout << a << ' ';
+                }
+                a -= n;
+                move += 1;
+                if (move == b_place) {
+                    cout << a << endl;
+                }
+            }
+            if (move > b_place) {
+                break;
+            }
+        }
+    }
+}
+
+문제를 풀기 위해 생각한 과정
+
+1. 우선 달팽이모양으로 정사각행렬을 구축하자
+2. 하지만 그 과정에서 vector를 사용하면 출력하고자 하는 순서가 꼬이게 된다
+3. 그렇다면 각 방향대로 번호를 매기고 규칙을 찾아내자
+3-1. 오른쪽으로 번호가 증가할때는 수가 1씩 증가한다
+3-2. 아래로 번호가 증가할 때는 수가 5씩 증가한다
+3-3. 왼쪽으로 번호가 증가할 때는 수가 1씩 감소한다
+3-4. 위로 번호가 증가할 때는 수가 5씩 감소한다.
+이를 반복한다.
+
+그리고 각 반복문 이후에 이동한 거리가 구하고자하는 b의 값보다 크다면 전체 반복문을 종료한다
+
+코드의 작성보다 문제의 이해와 구상에 더 큰 시간을 투자했던 문제
+처음에는 반복 횟수를 행과 열을 기준으로 했지만 수가 부족해서 전체 테스트케이스를 만족하지 못했고 입력된 n의 갯수를 바탕으로 n^2 - 1 로 수정하여 풀어냈다
